@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant.model";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
@@ -13,10 +14,17 @@ export const createRestaurant = async (req: Request, res: Response) => {
       return;
     }
 
+    let resultUrl;
+    if (photoUrl) {
+      resultUrl = await cloudinary.uploader.upload(photoUrl, {
+        folder: "restaurant",
+      });
+    }
+
     const restaurant = new Restaurant({
       name,
       address,
-      photoUrl,
+      photoUrl: resultUrl,
     });
 
     await restaurant.save();
