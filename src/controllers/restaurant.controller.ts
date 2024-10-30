@@ -24,7 +24,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
     const restaurant = new Restaurant({
       name,
       address,
-      photoUrl: resultUrl,
+      photoUrl: resultUrl?.secure_url,
     });
 
     await restaurant.save();
