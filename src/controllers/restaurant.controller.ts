@@ -4,25 +4,33 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
-    const { name, address, photoUrl } = req.body;
+    const { name, email, address } = req.body;
 
-    if (!name || !address || !photoUrl) {
+    const photoUrl = req.file?.path;
+
+    console.log(name, email, photoUrl);
+
+    if (!name || !email || !photoUrl || !address) {
       res
         .status(400)
-        .json({ message: "You most provide the appropriate credentials" });
+        .json({ error: "You must provide the appropriate credentials" });
 
       return;
     }
 
     let resultUrl;
+
+    console.log("result url here!", resultUrl);
+
     if (photoUrl) {
-      resultUrl = await cloudinary.uploader.upload(photoUrl, {
+      resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
         folder: "restaurant",
       });
     }
 
     const restaurant = new Restaurant({
       name,
+      email,
       address,
       photoUrl: resultUrl?.secure_url,
     });
