@@ -20,8 +20,6 @@ export const createRestaurant = async (req: Request, res: Response) => {
 
     let resultUrl;
 
-    console.log("result url here!", resultUrl);
-
     if (photoUrl) {
       resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
         folder: "restaurant",
