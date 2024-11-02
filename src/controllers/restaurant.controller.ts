@@ -8,16 +8,6 @@ export const createRestaurant = async (req: Request, res: Response) => {
 
     const photoUrl = req.file?.path;
 
-    console.log(name, email, photoUrl);
-
-    if (!name || !email || !photoUrl || !address) {
-      res
-        .status(400)
-        .json({ error: "You must provide the appropriate credentials" });
-
-      return;
-    }
-
     let resultUrl;
 
     if (photoUrl) {

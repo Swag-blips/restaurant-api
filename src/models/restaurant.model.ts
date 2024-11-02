@@ -1,4 +1,11 @@
-import mongoose, { Model } from "mongoose";
+import mongoose, { Document } from "mongoose";
+
+interface Restaurant extends Document {
+  name: string;
+  email: string;
+  address: string;
+  photUrl: string;
+}
 
 const restaurantSchema = new mongoose.Schema({
   name: {
@@ -16,6 +23,6 @@ const restaurantSchema = new mongoose.Schema({
   photoUrl: String,
 });
 
-const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+const Restaurant = mongoose.model<Restaurant>("Restaurant", restaurantSchema);
 
 export default Restaurant;
