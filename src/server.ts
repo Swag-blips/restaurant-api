@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import connectMongoDb from "../db/connectMongo";
+import connectMongoDb from "./db/connectMongo";
 import restaurantRoutes from "./routes/restaurant.route";
 import { v2 as cloudinary } from "cloudinary";
 
