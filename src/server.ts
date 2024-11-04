@@ -11,7 +11,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLODUINARY_SECRET_KEY,
 });
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
