@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyObjectSchema, ValidationError } from "yup";
 
-const validate =
+const validateRestaurant =
   (schema: AnyObjectSchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.body);
       await schema.validate(req.body, { abortEarly: true, strict: true });
 
       next();
@@ -15,4 +14,4 @@ const validate =
     }
   };
 
-export default validate;
+export default validateRestaurant;

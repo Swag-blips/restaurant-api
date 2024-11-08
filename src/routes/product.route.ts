@@ -4,6 +4,6 @@ import upload from "../config/multer.config";
 
 const router = express.Router();
 
-router.post("/", upload.single("photoUrl"), createProduct);
+router.post("/:restaurantId", upload.single("photoUrl"), createProduct);
 
 export default router;

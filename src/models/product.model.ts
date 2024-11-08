@@ -3,7 +3,7 @@ import mongoose, { Document } from "mongoose";
 export interface product extends Document {
   name: string;
   photoUrl: string;
-  price: Number;
+  price: number;
   category: string;
 }
 
