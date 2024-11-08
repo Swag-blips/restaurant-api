@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectMongoDb from "./db/connectMongo";
 import restaurantRoutes from "./routes/restaurant.route";
+import productRoutes from "./routes/product.route";
 import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
@@ -16,6 +17,7 @@ export const app = express();
 app.use(express.json());
 
 app.use("/api/restaurant", restaurantRoutes);
+app.use("/api/product", productRoutes);
 
 app.listen(8000, () => {
   connectMongoDb();

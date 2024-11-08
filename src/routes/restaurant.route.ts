@@ -1,8 +1,8 @@
 import express from "express";
 import { createRestaurant } from "../controllers/restaurant.controller";
 import upload from "../config/multer.config";
-import validate from "../middleware/validateSchema";
-import restaurantSchema from "../schema/restaurantSchema";
+import validate from "../middleware/validateRestaurant";
+import restaurantSchema from "../schema/restaurant.schema";
 
 const router = express.Router();
 

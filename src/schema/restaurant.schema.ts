@@ -1,4 +1,4 @@
-import { object, string, date, number } from "yup";
+import { object, string } from "yup";
 
 let restaurantSchema = object({
   name: string().required("name is required").min(4, "Name too short").max(50),
