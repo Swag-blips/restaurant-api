@@ -3,16 +3,18 @@ import { app } from "../server";
 import path from "path";
 import mongoose from "mongoose";
 
-beforeEach(async () => {
+jest.setTimeout(60000);
+
+beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URI as string);
 });
 
-describe("POST /createRestaurant", () => {
+describe("POST /restaurant", () => {
   it("returns status code 201 if the name, email, address and photoUrl are passed", async () => {
     const res = await request(app)
       .post("/api/restaurant")
       .field("name", "Test restaurant")
-      .field("email", "test@test.com")
+      .field("email", "test1@test.com")
       .field("address", "56 akobi crescent")
       .attach("photoUrl", path.resolve(__dirname, "test-image.jpg"));
 
@@ -26,6 +28,6 @@ describe("POST /createRestaurant", () => {
   });
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await mongoose.connection.close();
 });

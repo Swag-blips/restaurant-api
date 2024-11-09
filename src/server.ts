@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/product", productRoutes);
 
-app.listen(8000, () => {
+app.listen(4500, () => {
   connectMongoDb();
-  console.log("Server is listening on port 8000");
+  console.log("Server is listening on port 4500");
 });

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import Restaurant from "../models/restaurant.model";
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/product.model";
-
 import mongoose from "mongoose";
 
 export const createProduct = async (req: Request, res: Response) => {
