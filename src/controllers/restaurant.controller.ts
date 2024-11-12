@@ -9,23 +9,31 @@ export const createRestaurant = async (req: Request, res: Response) => {
 
     const photoUrl = req.file?.path;
 
-    let resultUrl;
+    const restaurant = await Restaurant.findOne({ name });
 
-    if (photoUrl) {
-      resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
-        folder: "restaurant",
+    if (!restaurant) {
+      let resultUrl;
+
+      if (photoUrl) {
+        resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
+          folder: "restaurant",
+        });
+      }
+
+      const newRestaurant = new Restaurant({
+        name,
+        email,
+        address,
+        photoUrl: resultUrl?.secure_url,
       });
+
+      await newRestaurant.save();
+      res.status(201).json(newRestaurant);
+      return;
+    } else {
+      res.status(400).json({ error: "restaurant already exists" });
+      return;
     }
-
-    const restaurant = new Restaurant({
-      name,
-      email,
-      address,
-      photoUrl: resultUrl?.secure_url,
-    });
-
-    await restaurant.save();
-    res.status(201).json(restaurant);
   } catch (err) {
     console.log(`an error occured in the createRestaurant controller ${err}`);
     res.status(500).json({ error: "Internal server error" });
