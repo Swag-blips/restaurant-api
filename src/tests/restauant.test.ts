@@ -28,6 +28,14 @@ describe("POST /restaurant", () => {
   });
 });
 
+describe("GET /restaurant", () => {
+  it("returns status code 201 when", async () => {
+    const res = await request(app).get("/api/restaurant");
+
+    expect(res.statusCode).toEqual(200);
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
