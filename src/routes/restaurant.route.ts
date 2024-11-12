@@ -1,5 +1,8 @@
 import express from "express";
-import { createRestaurant } from "../controllers/restaurant.controller";
+import {
+  createRestaurant,
+  getAllRestaurants,
+} from "../controllers/restaurant.controller";
 import upload from "../config/multer.config";
 import validateRestaurant from "../middleware/validateRestaurant";
 import restaurantSchema from "../schema/restaurant.schema";
@@ -12,5 +15,7 @@ router.post(
   validateRestaurant(restaurantSchema),
   createRestaurant
 );
+
+router.get("/", getAllRestaurants);
 
 export default router;

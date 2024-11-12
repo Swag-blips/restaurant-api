@@ -30,3 +30,18 @@ export const createRestaurant = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getAllRestaurants = async (req: Request, res: Response) => {
+  try {
+    const restaurants = await Restaurant.find();
+
+    res.status(200).json(restaurants);
+
+    return;
+  } catch (error) {
+    console.log(
+      `an error occured in the get all Restaurants controller ${error}`
+    );
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
