@@ -37,10 +37,10 @@ describe("GET /restaurant", () => {
   });
 });
 
-describe("Get /restaurant/:id", () => {
+describe("GET /restaurant/:id", () => {
   it("returns status code 200 and response body", async () => {
     const res = await request(app).get(
-      "/api/restaurant/6732faa1c0448d742b942ee6"
+      "/api/restaurant/67333284dc8ed10395bae2de"
     );
 
     expect(res.body).toHaveProperty("name");
@@ -57,10 +57,20 @@ describe("Get /restaurant/:id", () => {
   });
 });
 
+describe("DELETE /restaurant/:id", () => {
+  it("Deletes restaurant when id is passed", async () => {
+    const res = await request(app).delete(
+      "/api/restaurant/67333284dc8ed10395bae2de"
+    );
+
+    expect(res.statusCode).toEqual(200);
+  });
+});
+
 describe("GET /restaurant/product/:id", () => {
   it("returns status code 200 and products array", async () => {
     const res = await request(app).get(
-      "/api/restaurant/products/6732fae1c0448d742b942ee8"
+      "/api/restaurant/products/67333284dc8ed10395bae2de"
     );
 
     expect(res.statusCode).toBe(200);
