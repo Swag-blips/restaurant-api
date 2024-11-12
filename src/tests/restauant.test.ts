@@ -45,6 +45,15 @@ describe("Get /restaurant/:id", () => {
     expect(res.body).toHaveProperty("name");
     expect(res.statusCode).toEqual(200);
   });
+
+  it("returns status code 404 when wrong id is passed", async () => {
+    const res = await request(app).get(
+      "/api/restaurant/6732faa1c0448d742b742ee6"
+    );
+
+    expect(res.body).toHaveProperty("error");
+    expect(res.statusCode).toBe(404);
+  });
 });
 
 afterAll(async () => {
