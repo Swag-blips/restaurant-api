@@ -2,6 +2,7 @@ import express from "express";
 import {
   createRestaurant,
   getAllRestaurants,
+  getRestaurantsProducts,
   getSpecificRestaurant,
 } from "../controllers/restaurant.controller";
 import upload from "../config/multer.config";
@@ -19,5 +20,6 @@ router.post(
 
 router.get("/", getAllRestaurants);
 router.get("/:id", getSpecificRestaurant);
+router.get("/products/:id", getRestaurantsProducts);
 
 export default router;
