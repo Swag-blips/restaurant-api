@@ -36,6 +36,17 @@ describe("GET /restaurant", () => {
   });
 });
 
+describe("Get /restaurant/:id", () => {
+  it("returns status code 200 and response body", async () => {
+    const res = await request(app).get(
+      "/api/restaurant/6732faa1c0448d742b942ee6"
+    );
+
+    expect(res.body).toHaveProperty("name");
+    expect(res.statusCode).toEqual(200);
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
