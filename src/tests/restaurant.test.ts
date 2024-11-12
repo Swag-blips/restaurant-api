@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../server";
 import path from "path";
 import mongoose from "mongoose";
+import { product } from "../models/product.model";
 
 jest.setTimeout(60000);
 
@@ -53,6 +54,18 @@ describe("Get /restaurant/:id", () => {
 
     expect(res.body).toHaveProperty("error");
     expect(res.statusCode).toBe(404);
+  });
+});
+
+describe("GET /restaurant/product/:id", () => {
+  it("returns status code 200 and products array", async () => {
+    const res = await request(app).get(
+      "/api/restaurant/products/6732fae1c0448d742b942ee8"
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("products");
+    expect(res.body.products).toHaveLength(1);
   });
 });
 
