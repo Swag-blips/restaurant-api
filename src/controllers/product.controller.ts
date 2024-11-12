@@ -76,3 +76,50 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { name, price, category } = req.body;
+
+    console.log(name);
+
+    const photoUrl = req.file?.path;
+    const productId = req.params.id;
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404).json({ error: "product does not exist" });
+      return;
+    }
+
+    let resultUrl;
+    if (product.photoUrl) {
+      const productImgId = product.photoUrl.split("/").pop()?.split(".")[0];
+
+      if (productImgId) {
+        await cloudinary.uploader.destroy(`product/${productImgId}`, {
+          resource_type: "image",
+        });
+
+        if (photoUrl) {
+          resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
+            folder: "product",
+          });
+        }
+      }
+    }
+
+    product.name = name || product.name;
+    product.price = price || product.price;
+    product.category = category || product.category;
+    product.photoUrl = resultUrl?.secure_url || product.photoUrl;
+
+    await product.save();
+
+    res.status(200).json({ message: "product successfully updated" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

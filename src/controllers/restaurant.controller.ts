@@ -138,10 +138,6 @@ export const updateRestaurant = async (req: Request, res: Response) => {
   const photoUrl = req.file?.path;
   const restaurantId = req.params.id;
 
-  // if (!name || !email || !address) {
-  //   res.status(404).json({ error: "" });
-  // }
-
   try {
     const restaurant = await Restaurant.findById(restaurantId);
 
@@ -177,7 +173,7 @@ export const updateRestaurant = async (req: Request, res: Response) => {
 
     await restaurant.save();
 
-    res.status(200).json({ message: "profile successfully updated" });
+    res.status(200).json({ message: "Restaurant successfully updated" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
