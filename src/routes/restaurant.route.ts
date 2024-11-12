@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createRestaurant,
+  deleteRestaurant,
   getAllRestaurants,
   getRestaurantsProducts,
   getSpecificRestaurant,
@@ -21,5 +22,6 @@ router.post(
 router.get("/", getAllRestaurants);
 router.get("/:id", getSpecificRestaurant);
 router.get("/products/:id", getRestaurantsProducts);
+router.delete("/:id", deleteRestaurant);
 
 export default router;

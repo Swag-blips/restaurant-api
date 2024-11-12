@@ -5,6 +5,7 @@ export interface product extends Document {
   photoUrl: string;
   price: number;
   category: string;
+  restaurantId: mongoose.Types.ObjectId;
 }
 
 const productSchema = new mongoose.Schema(
@@ -24,6 +25,10 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+    },
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
     },
   },
   { timestamps: true }

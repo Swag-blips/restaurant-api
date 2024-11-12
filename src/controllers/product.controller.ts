@@ -34,6 +34,7 @@ export const createProduct = async (req: Request, res: Response) => {
       price,
       category,
       photoUrl: resultUrl?.secure_url,
+      restaurantId: restaurant._id,
     });
 
     restaurant?.products.push(newProduct._id as mongoose.Types.ObjectId);

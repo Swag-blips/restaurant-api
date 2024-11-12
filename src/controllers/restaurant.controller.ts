@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant.model";
 import { v2 as cloudinary } from "cloudinary";
+import Product from "../models/product.model";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
@@ -80,6 +81,42 @@ export const getRestaurantsProducts = async (req: Request, res: Response) => {
     }
 
     res.status(200).json(restaurantProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteRestaurant = async (req: Request, res: Response) => {
+  const restaurantId = req.params.id;
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      res.status(404).json({ error: "Restaurant does not exist" });
+    }
+
+    if (restaurant?.photoUrl) {
+      const restaurantImgId = restaurant.photoUrl
+        .split("/")
+        .pop()
+        ?.split(".")[0];
+      console.log(restaurantImgId);
+
+      if (restaurantImgId) {
+        console.log("We got here!");
+        const res = await cloudinary.uploader.destroy(
+          `restaurant/${restaurantImgId}`,
+          {
+            resource_type: "image",
+          }
+        );
+      }
+    }
+    await Restaurant.findByIdAndDelete(restaurantId);
+    await Product.deleteMany({ restaurantId: restaurant?._id });
+
+    res.status(200).json({ message: "restaurant successfully deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
