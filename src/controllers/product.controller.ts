@@ -8,7 +8,7 @@ export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, price, category } = req.body;
 
-    const restaurantId = req.params.restaurantId;
+    const restaurantId = req.params.id;
     const photoUrl = req.file?.path;
 
     const restaurant = await Restaurant.findOne({ _id: restaurantId });
@@ -44,6 +44,32 @@ export const createProduct = async (req: Request, res: Response) => {
       .status(201)
       .json({ message: "Product successfully created", product: newProduct });
     return;
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404).json({ error: "Product not found" });
+      return;
+    }
+
+    await Restaurant.findByIdAndUpdate(product.restaurantId, {
+      $pull: {
+        products: product._id,
+      },
+    });
+
+    await Product.findByIdAndDelete(productId);
+
+    res.status(200).json({ message: "Product successfully deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
