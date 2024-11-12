@@ -5,6 +5,7 @@ import {
   getAllRestaurants,
   getRestaurantsProducts,
   getSpecificRestaurant,
+  updateRestaurant,
 } from "../controllers/restaurant.controller";
 import upload from "../config/multer.config";
 import validateRestaurant from "../middleware/validateRestaurant";
@@ -23,5 +24,6 @@ router.get("/", getAllRestaurants);
 router.get("/:id", getSpecificRestaurant);
 router.get("/products/:id", getRestaurantsProducts);
 router.delete("/:id", deleteRestaurant);
+router.put("/:id", upload.single("photoUrl"), updateRestaurant);
 
 export default router;

@@ -89,6 +89,7 @@ export const getRestaurantsProducts = async (req: Request, res: Response) => {
     }
 
     res.status(200).json(restaurantProducts);
+    return;
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -102,6 +103,7 @@ export const deleteRestaurant = async (req: Request, res: Response) => {
 
     if (!restaurant) {
       res.status(404).json({ error: "Restaurant does not exist" });
+      return;
     }
 
     if (restaurant?.photoUrl) {
@@ -109,10 +111,8 @@ export const deleteRestaurant = async (req: Request, res: Response) => {
         .split("/")
         .pop()
         ?.split(".")[0];
-      console.log(restaurantImgId);
 
       if (restaurantImgId) {
-        console.log("We got here!");
         const res = await cloudinary.uploader.destroy(
           `restaurant/${restaurantImgId}`,
           {
@@ -125,6 +125,59 @@ export const deleteRestaurant = async (req: Request, res: Response) => {
     await Product.deleteMany({ restaurantId: restaurant?._id });
 
     res.status(200).json({ message: "restaurant successfully deleted" });
+    return;
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateRestaurant = async (req: Request, res: Response) => {
+  const { name, email, address } = req.body;
+
+  const photoUrl = req.file?.path;
+  const restaurantId = req.params.id;
+
+  // if (!name || !email || !address) {
+  //   res.status(404).json({ error: "" });
+  // }
+
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      res.status(404).json({ error: "Restaurant does not exist" });
+      return;
+    }
+
+    let resultUrl;
+    if (restaurant.photoUrl) {
+      const restaurantImgId = restaurant.photoUrl
+        .split("/")
+        .pop()
+        ?.split(".")[0];
+
+      if (restaurantImgId) {
+        await cloudinary.uploader.destroy(`restaurant/${restaurantImgId}`, {
+          resource_type: "image",
+        });
+
+        if (photoUrl) {
+          resultUrl = await cloudinary.uploader.upload(photoUrl as string, {
+            folder: "restaurant",
+          });
+        }
+      }
+    }
+
+    restaurant.name = name || restaurant.name;
+    restaurant.email = email || restaurant.email;
+    restaurant.address = address || restaurant.address;
+    restaurant.photoUrl = resultUrl?.secure_url || restaurant.photoUrl;
+
+    await restaurant.save();
+
+    res.status(200).json({ message: "profile successfully updated" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
